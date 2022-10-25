@@ -1,6 +1,11 @@
 import { FaCoins } from "react-icons/fa";
 
-const Header = () => {
+type HeaderProps = {
+  onClickFreeCoins: () => void;
+  balancePlayer: number;
+};
+
+const Header = ({ onClickFreeCoins, balancePlayer }: HeaderProps) => {
   return (
     <div className="navbar bg-neutral text-neutral-content rounded-xl">
       <div className="navbar-start">
@@ -26,7 +31,7 @@ const Header = () => {
             className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
           >
             <li>
-              <button className="btn">Free LubyCoins</button>
+              <button className="btn">Free 10 LubyCoins</button>
             </li>
             <li>
               <button className="btn">Claim LBC</button>
@@ -40,17 +45,21 @@ const Header = () => {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal p-0">
           <li>
-            <button className="btn">Free LubyCoins</button>
+            <button className="btn" onClick={onClickFreeCoins}>
+              Free 10 LubyCoins
+            </button>
           </li>
           <li>
-            <button className="btn">Claim LBC</button>
+            <button className="btn" disabled={balancePlayer <= 0}>
+              Claim LBC
+            </button>
           </li>
         </ul>
       </div>
       <div className="navbar-end">
         <div className="stats shadow">
           <div className="stat">
-            <div className="stat-value text-2xl">89,400 LBC</div>
+            <div className="stat-value text-2xl">{balancePlayer} LBC</div>
             <div className="stat-figure">
               <FaCoins size={20} />
             </div>
