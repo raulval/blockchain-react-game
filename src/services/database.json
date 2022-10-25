@@ -1,0 +1,70 @@
+{
+   "questions": [
+      {
+         "id": 1,
+         "question": "Which is the cryptocurrency with the highest market cap?",
+         "answers": [
+            {
+               "answer": "Ethereum",
+               "correct": false
+            },
+            {
+               "answer": "Bitcoin",
+               "correct": true
+            },
+            {
+               "answer": "Bitcoin cash",
+               "correct": false
+            },
+            {
+               "answer": "Solana",
+               "correct": false
+            }
+         ]
+      },
+      {
+         "id": 2,
+         "question": "Which is the technology behind cryptocurrencies?",
+         "answers": [
+            {
+               "answer": "Pen-drives",
+               "correct": false
+            },
+            {
+               "answer": "Blockchain",
+               "correct": true
+            },
+            {
+               "answer": "Internet",
+               "correct": false
+            },
+            {
+               "answer": "Blackchain",
+               "correct": false
+            }
+         ]
+      },
+      {
+         "id": 3,
+         "question": "Who created bitcoin?",
+         "answers": [
+            {
+               "answer": "Satoro Nakagima",
+               "correct": false
+            },
+            {
+               "answer": "Samsung",
+               "correct": false
+            },
+            {
+               "answer": "Fernando Henrique Cardoso",
+               "correct": false
+            },
+            {
+               "answer": "Satoshi Nakamoto",
+               "correct": true
+            }
+         ]
+      }
+   ]
+}
