@@ -1,16 +1,17 @@
-import { useEffect } from "react";
+import Home from "pages/Home";
+import { Toaster } from "react-hot-toast";
 import "./App.css";
-import Header from "./components/Header";
-import { init } from "./Web3Client";
 
 function App() {
-  useEffect(() => {
-    init();
-  }, []);
-
   return (
-    <div className="container mx-auto pt-2">
-      <Header />
+    <div>
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          duration: 5000,
+        }}
+      />
+      <Home />
     </div>
   );
 }
