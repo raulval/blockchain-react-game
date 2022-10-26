@@ -2,10 +2,17 @@ import { FaCoins } from "react-icons/fa";
 
 type HeaderProps = {
   onClickFreeCoins: () => void;
+  onClickClaim: () => void;
   balancePlayer: number;
+  balanceGame: number;
 };
 
-const Header = ({ onClickFreeCoins, balancePlayer }: HeaderProps) => {
+const Header = ({
+  onClickFreeCoins,
+  balancePlayer,
+  onClickClaim,
+  balanceGame,
+}: HeaderProps) => {
   return (
     <div className="navbar bg-neutral text-neutral-content rounded-xl">
       <div className="navbar-start">
@@ -45,13 +52,17 @@ const Header = ({ onClickFreeCoins, balancePlayer }: HeaderProps) => {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal p-0">
           <li>
-            <button className="btn" onClick={onClickFreeCoins}>
+            <button className="btn text-base" onClick={onClickFreeCoins}>
               Free 10 LubyCoins
             </button>
           </li>
           <li>
-            <button className="btn" disabled={balancePlayer <= 0}>
-              Claim LBC
+            <button
+              className="btn text-base"
+              onClick={onClickClaim}
+              disabled={balanceGame <= 0}
+            >
+              {balanceGame > 0 ? `Claim ${balanceGame} LBCs` : "Claim LBC"}
             </button>
           </li>
         </ul>
