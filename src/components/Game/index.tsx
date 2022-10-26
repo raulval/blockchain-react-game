@@ -38,11 +38,12 @@ const Game = ({ onEndGame, updatePlayerBalance }: GameProps) => {
         correctAnswer().then(() => {
           updatePlayerBalance();
           setScore(score + 1);
+
           if (currentQuestion + 1 < questionsData.questions.length) {
             setSelectedAnswer(undefined);
             setCurrentQuestion(currentQuestion + 1);
           } else {
-            onEndGame(score, questionsData.questions.length);
+            onEndGame(score + 1, questionsData.questions.length);
           }
         });
       } else {
@@ -70,7 +71,6 @@ const Game = ({ onEndGame, updatePlayerBalance }: GameProps) => {
             const handleSelectAnswer = () => {
               setSelectedAnswer(i);
             };
-            console.log("Selected Answer", selectedAnswer);
 
             return (
               <input
