@@ -47,7 +47,7 @@ const Home = () => {
     <div className="container mx-auto pt-2">
       <Header
         onClickFreeCoins={handleFreeCoins}
-        balancePlayer={Number(balancePlayer)}
+        balancePlayer={Number(balancePlayer) / 10 ** 18}
       />
       <div className="container flex justify-center mx-auto mt-36">
         <div className="card w-3/4 bg-slate-800 text-neutral-content drop-shadow-lg border-2 border-slate-500">
