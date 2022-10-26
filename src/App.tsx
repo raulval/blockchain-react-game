@@ -4,15 +4,15 @@ import "./App.css";
 
 function App() {
   return (
-    <div>
+    <>
       <Toaster
-        position="bottom-right"
+        position="top-left"
         toastOptions={{
           duration: 5000,
         }}
       />
       <Home />
-    </div>
+    </>
   );
 }
 
