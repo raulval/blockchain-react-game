@@ -2,7 +2,7 @@
    "questions": [
       {
          "id": 1,
-         "question": "Which is the cryptocurrency with the highest market cap?",
+         "question": "Which cryptocurrency has the highest market cap?",
          "answers": [
             {
                "answer": "Ethereum",
@@ -24,7 +24,7 @@
       },
       {
          "id": 2,
-         "question": "Which is the technology behind cryptocurrencies?",
+         "question": "Which technology is behind cryptocurrencies?",
          "answers": [
             {
                "answer": "Pen-drives",
