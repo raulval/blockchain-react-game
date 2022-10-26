@@ -91,7 +91,7 @@ export const getOwnerBalance = async () => {
   return total;
 };
 
-export const getPlayerBalance = async () => {
+export const getGameBalance = async () => {
   if (!isInitialized) {
     await init();
   }
@@ -101,7 +101,7 @@ export const getPlayerBalance = async () => {
   return total;
 };
 
-export const getBalanceOf = async () => {
+export const getPlayerBalance = async () => {
   if (!isInitialized) {
     await init();
   }
@@ -123,4 +123,56 @@ export const mint = async () => {
   } catch (err) {
     return err;
   }
+};
+
+export const claim = async () => {
+  if (!isInitialized) {
+    await init();
+  }
+
+  await contract.methods
+    .approve(convertLBC(0))
+    .send({ from: selectedAccount })
+    .then((approve: any) => {
+      return approve;
+    });
+
+  return contract.methods
+    .claimBalance(convertLBC(0))
+    .send({ from: selectedAccount });
+};
+
+export const startGame = async () => {
+  if (!isInitialized) {
+    await init();
+  }
+
+  await contract.methods
+    .approve(convertLBC(4))
+    .send({ from: selectedAccount })
+    .then((approve: any) => {
+      return approve;
+    });
+
+  const response = await contract.methods
+    .startGame(convertLBC(4))
+    .send({ from: selectedAccount });
+
+  return response;
+};
+
+export const correctAnswer = async () => {
+  const response = await contract.methods
+    .correctAnswer(convertLBC(2))
+    .send({ from: selectedAccount });
+
+  return response;
+};
+
+export const incorrectAnswer = async () => {
+  const response = await contract.methods
+    .incorrectAnswer(convertLBC(2))
+    .send({ from: selectedAccount });
+
+  return response;
 };
