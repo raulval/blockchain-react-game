@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import database from "services/database.json";
 import { correctAnswer, incorrectAnswer } from "services/Web3Client";
 
@@ -20,9 +21,10 @@ export interface Answer {
 type GameProps = {
   onEndGame: (score: number, totalQuestions: number) => void;
   updateGameBalance: () => void;
+  balanceGame: number;
 };
 
-const Game = ({ onEndGame, updateGameBalance }: GameProps) => {
+const Game = ({ onEndGame, updateGameBalance, balanceGame }: GameProps) => {
   const [questionsData, setQuestionsData] = useState<Database>(database);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number>();
@@ -69,6 +71,9 @@ const Game = ({ onEndGame, updateGameBalance }: GameProps) => {
         {questionsData.questions[currentQuestion].answers.map(
           (answer: Answer, i) => {
             const handleSelectAnswer = () => {
+              if (balanceGame <= 0) {
+                toast.error("Game balance is empty, reload the page");
+              }
               setSelectedAnswer(i);
             };
 
@@ -89,7 +94,7 @@ const Game = ({ onEndGame, updateGameBalance }: GameProps) => {
       <button
         className="btn btn-info mt-5 w-1/2 hover:bg-sky-600"
         onClick={handleConfirm}
-        disabled={selectedAnswer === undefined}
+        disabled={selectedAnswer === undefined || balanceGame <= 0}
       >
         Confirm answer
       </button>
