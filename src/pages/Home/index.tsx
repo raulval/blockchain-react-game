@@ -10,9 +10,13 @@ import {
   init,
   mint,
   startGame,
+  withdraw,
 } from "services/Web3Client";
 
+declare let window: any;
+
 const Home = () => {
+  const [selectedAccount, setSelectedAccount] = useState<string>();
   const [ownerBalance, setOwnerBalance] = useState("0");
   const [balancePlayer, setBalancePlayer] = useState("0");
   const [balanceGame, setBalanceGame] = useState("0");
@@ -23,21 +27,28 @@ const Home = () => {
 
   useEffect(() => {
     init();
+    getSelectedAccount();
     getBalanceGame();
     getBalanceOwner();
     getBalancePlayer();
   }, []);
 
-  const getBalanceOwner = () => {
-    getOwnerBalance()
-      .then((response) => {
-        setOwnerBalance((response / 10 ** 18).toString());
-        console.log("Owner balance: ", Number(ownerBalance));
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error("You are not the owner!");
+  const getSelectedAccount = async () => {
+    const provider = window.ethereum;
+
+    if (provider) {
+      const accounts = await provider.request({
+        method: "eth_requestAccounts",
       });
+      setSelectedAccount(accounts[0]);
+    }
+  };
+
+  const getBalanceOwner = () => {
+    getOwnerBalance().then((response) => {
+      setOwnerBalance((response / 10 ** 18).toString());
+      console.log("Owner balance: ", Number(ownerBalance));
+    });
   };
 
   const getBalancePlayer = () => {
@@ -62,24 +73,35 @@ const Home = () => {
       })
       .catch((err) => {
         console.log("wi", err);
-        toast.error("Error getting free coins");
+        toast.error("Error getting free Luby Coins");
       });
-
-    console.log("balancePlayer", balancePlayer);
   };
 
   const handleClaim = () => {
     claim()
       .then(() => {
+        getBalanceGame();
+        getBalancePlayer();
         toast.success(
           `Congratulations, you claimed ${balanceGame} LBC (Luby Coins)`
         );
-        getBalanceGame();
-        getBalancePlayer();
       })
       .catch((err) => {
-        console.log("claim: ", err);
         toast.error(`Error claiming Luby Coins`);
+        console.log(err);
+      });
+  };
+
+  const handleWithdraw = () => {
+    withdraw()
+      .then(() => {
+        getBalanceOwner();
+        getBalancePlayer();
+        toast.success(`Congratulations, you withdrew ${ownerBalance} LBC`);
+      })
+      .catch((err) => {
+        console.log("withdraw: ", err);
+        toast.error(`Error withdrawing Luby Coins`);
         toast.error(err.message);
       });
   };
@@ -91,10 +113,10 @@ const Home = () => {
         getBalanceGame();
         getBalancePlayer();
         getBalanceOwner();
-        console.log("start", tx);
       })
       .catch((err) => {
         console.log("start", err);
+        toast.error("Error starting the game");
       });
   };
 
@@ -112,8 +134,11 @@ const Home = () => {
       <Header
         onClickFreeCoins={handleFreeCoins}
         onClickClaim={handleClaim}
+        onClickWithdraw={handleWithdraw}
         balancePlayer={Number(balancePlayer)}
         balanceGame={Number(balanceGame)}
+        ownerBalance={Number(ownerBalance)}
+        selectedAccount={selectedAccount}
       />
       <div className="container flex justify-center mx-auto mt-36">
         <div className="card w-3/4 bg-slate-800 text-neutral-content drop-shadow-lg border-2 border-slate-500">
@@ -121,7 +146,6 @@ const Home = () => {
             <h2 className="card-title justify-center text-2xl">Let's Play!</h2>
             <p className="text-center mt-5 text-lg">
               You need at least 10 LBCs to start the game. <br />
-              Entrance fee is 4 LBCs.
               <br /> Incorrect answers = -2 LBCs and correct answers = +2 LBCs
             </p>
             {!startedGame && !gameOver ? (
@@ -177,7 +201,7 @@ const Home = () => {
                 <div className="divider"></div>
                 <Game
                   onEndGame={handleEndGame}
-                  updatePlayerBalance={getBalanceGame}
+                  updateGameBalance={getBalanceGame}
                 />
               </>
             )}
