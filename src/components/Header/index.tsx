@@ -64,7 +64,7 @@ const Header = ({
                 <button
                   className="btn text-base"
                   onClick={onClickWithdraw}
-                  disabled={ownerBalance <= 0}
+                  disabled={ownerBalance <= 0 || balanceGame > 0}
                 >
                   {ownerBalance > 0
                     ? `Withdraw ${ownerBalance} LBCs`
@@ -101,7 +101,7 @@ const Header = ({
               <button
                 className="btn text-base"
                 onClick={onClickWithdraw}
-                disabled={ownerBalance <= 0}
+                disabled={ownerBalance <= 0 || balanceGame > 0}
               >
                 {ownerBalance > 0
                   ? `Withdraw ${ownerBalance} LBCs`

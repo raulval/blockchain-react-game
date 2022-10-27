@@ -47,21 +47,18 @@ const Home = () => {
   const getBalanceOwner = () => {
     getOwnerBalance().then((response) => {
       setOwnerBalance((response / 10 ** 18).toString());
-      console.log("Owner balance: ", Number(ownerBalance));
     });
   };
 
   const getBalancePlayer = () => {
     getPlayerBalance().then((response) => {
       setBalancePlayer((response / 10 ** 18).toString());
-      console.log("Balance Player: ", balancePlayer);
     });
   };
 
   const getBalanceGame = () => {
     getGameBalance().then((response) => {
       setBalanceGame((response / 10 ** 18).toString());
-      console.log("Balance Game: ", balanceGame);
     });
   };
 
@@ -82,6 +79,7 @@ const Home = () => {
       .then(() => {
         getBalanceGame();
         getBalancePlayer();
+        getBalanceOwner();
         toast.success(
           `Congratulations, you claimed ${balanceGame} LBC (Luby Coins)`
         );
@@ -97,6 +95,7 @@ const Home = () => {
       .then(() => {
         getBalanceOwner();
         getBalancePlayer();
+        getBalanceGame();
         toast.success(`Congratulations, you withdrew ${ownerBalance} LBC`);
       })
       .catch((err) => {
@@ -112,7 +111,6 @@ const Home = () => {
         setStartedGame(true);
         getBalanceGame();
         getBalancePlayer();
-        getBalanceOwner();
       })
       .catch((err) => {
         console.log("start", err);
@@ -202,6 +200,7 @@ const Home = () => {
                 <Game
                   onEndGame={handleEndGame}
                   updateGameBalance={getBalanceGame}
+                  balanceGame={Number(balanceGame)}
                 />
               </>
             )}
