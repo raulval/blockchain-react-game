@@ -11,6 +11,7 @@ let selectedAccount;
 let contract;
 let isInitialized = false;
 let addressContract = "";
+export const gameOwner = "0xdb8644c2e46956bd238fb47907872c176a477762";
 
 export const init = async () => {
   let provider = window.ethereum;
@@ -29,6 +30,7 @@ export const init = async () => {
 
     provider.on("accountsChanged", function (accounts) {
       selectedAccount = accounts[0];
+      window.location.reload();
       console.log(`Selected accounts: ${selectedAccount}`);
     });
   } else {
@@ -37,7 +39,6 @@ export const init = async () => {
   const web3 = new Web3(provider);
 
   const networkId = await web3.eth.net.getId();
-  console.log({ networkId });
   // @ts-ignore
   contract = new web3.eth.Contract(
     LubyGame.abi,
@@ -45,30 +46,6 @@ export const init = async () => {
   );
   addressContract = LubyGame.networks[networkId].address;
   isInitialized = true;
-};
-
-const addTokenToWallet = async (address, symbol, decimals, tokenImage) => {
-  try {
-    const wasAdded = await window.ethereum.request({
-      method: "wallet_watchAsset",
-      params: {
-        type: "ERC20",
-        options: {
-          address: address,
-          symbol: symbol,
-          decimals: decimals,
-          image: tokenImage,
-        },
-      },
-    });
-    if (wasAdded) {
-      console.log("Thanks for your interest!");
-    } else {
-      console.log("Your loss!");
-    }
-  } catch (error) {
-    console.log(error);
-  }
 };
 
 export const approve = async () => {
@@ -148,14 +125,14 @@ export const startGame = async () => {
   }
 
   await contract.methods
-    .approve(convertLBC(4))
+    .approve(convertLBC(10))
     .send({ from: selectedAccount })
     .then((approve: any) => {
       return approve;
     });
 
   const response = await contract.methods
-    .startGame(convertLBC(4))
+    .startGame(convertLBC(10))
     .send({ from: selectedAccount });
 
   return response;
@@ -175,4 +152,15 @@ export const incorrectAnswer = async () => {
     .send({ from: selectedAccount });
 
   return response;
+};
+
+export const withdraw = async () => {
+  if (!isInitialized) {
+    await init();
+  }
+  const total = await contract.methods
+    .withdraw()
+    .send({ from: selectedAccount });
+
+  return total;
 };
