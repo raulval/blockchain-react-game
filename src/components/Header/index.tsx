@@ -1,17 +1,24 @@
 import { FaCoins } from "react-icons/fa";
+import { gameOwner } from "services/Web3Client";
 
 type HeaderProps = {
   onClickFreeCoins: () => void;
   onClickClaim: () => void;
+  onClickWithdraw: () => void;
   balancePlayer: number;
   balanceGame: number;
+  ownerBalance: number;
+  selectedAccount?: string;
 };
 
 const Header = ({
   onClickFreeCoins,
   balancePlayer,
   onClickClaim,
+  onClickWithdraw,
   balanceGame,
+  ownerBalance,
+  selectedAccount,
 }: HeaderProps) => {
   return (
     <div className="navbar bg-neutral text-neutral-content rounded-xl">
@@ -38,11 +45,34 @@ const Header = ({
             className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
           >
             <li>
-              <button className="btn">Free 10 LubyCoins</button>
+              <button className="btn text-base" onClick={onClickFreeCoins}>
+                Free 10 LubyCoins
+              </button>
             </li>
             <li>
-              <button className="btn">Claim LBC</button>
+              <button
+                className="btn text-base"
+                onClick={onClickClaim}
+                disabled={balanceGame <= 0}
+              >
+                {balanceGame > 0 ? `Claim ${balanceGame} LBCs` : "Claim LBC"}
+              </button>
             </li>
+
+            {gameOwner === selectedAccount && (
+              <li>
+                <button
+                  className="btn text-base"
+                  onClick={onClickWithdraw}
+                  disabled={ownerBalance <= 0}
+                >
+                  {ownerBalance > 0
+                    ? `Withdraw ${ownerBalance} LBCs`
+                    : "Withdraw LBC"}
+                </button>
+                <p className="text-yellow-600 font-bold">Game Owner</p>
+              </li>
+            )}
           </ul>
         </div>
         <a className="btn btn-ghost normal-case text-xl text-gray-200">
@@ -65,6 +95,21 @@ const Header = ({
               {balanceGame > 0 ? `Claim ${balanceGame} LBCs` : "Claim LBC"}
             </button>
           </li>
+
+          {gameOwner === selectedAccount && (
+            <li>
+              <button
+                className="btn text-base"
+                onClick={onClickWithdraw}
+                disabled={ownerBalance <= 0}
+              >
+                {ownerBalance > 0
+                  ? `Withdraw ${ownerBalance} LBCs`
+                  : "Withdraw LBC"}
+              </button>
+              <p className="text-yellow-600 font-bold">Game Owner</p>
+            </li>
+          )}
         </ul>
       </div>
       <div className="navbar-end">
