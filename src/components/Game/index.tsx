@@ -19,24 +19,24 @@ export interface Answer {
 
 type GameProps = {
   onEndGame: (score: number, totalQuestions: number) => void;
-  updatePlayerBalance: () => void;
+  updateGameBalance: () => void;
 };
 
-const Game = ({ onEndGame, updatePlayerBalance }: GameProps) => {
+const Game = ({ onEndGame, updateGameBalance }: GameProps) => {
   const [questionsData, setQuestionsData] = useState<Database>(database);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number>();
   const [score, setScore] = useState(0);
 
   const handleConfirm = () => {
-    if (selectedAnswer) {
+    if (selectedAnswer !== undefined) {
       const isCorrect =
         questionsData.questions[currentQuestion].answers[selectedAnswer]
           .correct;
 
       if (isCorrect) {
         correctAnswer().then(() => {
-          updatePlayerBalance();
+          updateGameBalance();
           setScore(score + 1);
 
           if (currentQuestion + 1 < questionsData.questions.length) {
@@ -48,7 +48,7 @@ const Game = ({ onEndGame, updatePlayerBalance }: GameProps) => {
         });
       } else {
         incorrectAnswer().then(() => {
-          updatePlayerBalance();
+          updateGameBalance();
           if (currentQuestion + 1 < questionsData.questions.length) {
             setSelectedAnswer(undefined);
             setCurrentQuestion(currentQuestion + 1);
@@ -89,7 +89,7 @@ const Game = ({ onEndGame, updatePlayerBalance }: GameProps) => {
       <button
         className="btn btn-info mt-5 w-1/2 hover:bg-sky-600"
         onClick={handleConfirm}
-        disabled={!selectedAnswer}
+        disabled={selectedAnswer === undefined}
       >
         Confirm answer
       </button>
