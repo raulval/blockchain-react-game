@@ -4,6 +4,7 @@ import { convertLBC } from "shared/utils";
 import Web3 from "web3";
 
 import LubyGame from "contracts/LubyGame.json";
+import toast from "react-hot-toast";
 
 declare let window: any;
 
@@ -34,7 +35,7 @@ export const init = async () => {
       console.log(`Selected accounts: ${selectedAccount}`);
     });
   } else {
-    alert("Please install MetaMask!");
+    toast.error("Please install MetaMask!");
   }
   const web3 = new Web3(provider);
 
@@ -107,13 +108,6 @@ export const claim = async () => {
     await init();
   }
 
-  await contract.methods
-    .approve(convertLBC(0))
-    .send({ from: selectedAccount })
-    .then((approve: any) => {
-      return approve;
-    });
-
   return contract.methods
     .claimBalance(convertLBC(0))
     .send({ from: selectedAccount });
@@ -124,12 +118,7 @@ export const startGame = async () => {
     await init();
   }
 
-  await contract.methods
-    .approve(convertLBC(10))
-    .send({ from: selectedAccount })
-    .then((approve: any) => {
-      return approve;
-    });
+  await approve();
 
   const response = await contract.methods
     .startGame(convertLBC(10))
